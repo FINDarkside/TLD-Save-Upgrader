@@ -1,0 +1,15 @@
+html{margin:0;padding:0;}
+body{
+  margin: 0; padding: 0;
+  background-color: #111;
+  color: #fafafa;
+}
+
+h1{
+	text-align: center;
+}
+
+.content{
+	max-width: 600px;
+	margin: 0px auto;
+}
