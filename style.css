@@ -6,10 +6,14 @@ body{
 }
 
 h1{
-	text-align: center;
+  text-align: center;
 }
 
 .content{
-	max-width: 600px;
-	margin: 0px auto;
+  max-width: 600px;
+  margin: 0px auto;
+}
+
+.collapsible-header{
+  background-color: #111 !important;	
 }
