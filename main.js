@@ -76,30 +76,31 @@ function migrateSave(files) {
                             zipAsyncFiles++;
                             zipEntry.async('ArrayBuffer').then(function (fileData) {
                                 zipAsyncFiles--;
-                                
+
                                 if (sceneOffsets[zipEntry.name]) {
                                     var scene = JSON.parse(decompressString(fileData));
                                     var sceneOffset = sceneOffsets[zipEntry.name];
-									
-									var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
-									for(let i = 0; i < spawnManager.m_SerializedSpawnRegions; i++){
-										var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
-										for(let j = 0; j < spawnRegion.m_ActiveSpawns.length; j++){
-											spawnRegion.m_ActiveSpawns[j].m_Position[1] += sceneOffset;
-										}
-										spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion = JSON.stringify(spawnRegion);
-									}
-									scene.m_SpawnRegionManagerSerialized = JSON.stringify(spawnManager);
-									spawnManager = null;;
-									
-									var gearManager = JSON.parse(scene.m_GearManagerSerialized);
-									for(let i = 0; i < gearManager.m_SerializedItems.length; i++){
-										var gear = JSON.parse(gearManager.m_SerializedItems[i].m_SearializedGear);
-										gear.m_Position[1] += sceneOffset;
-										gearManager.m_SerializedItems[i].m_SearializedGear = JSON.stringify(gear);
-									}
-									scene.m_GearManagerSerialized = JSON.stringify(gearManager);
-									spawnManager = null;
+
+                                    var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
+                                    for (let i = 0; i < spawnManager.m_SerializedSpawnRegions; i++) {
+                                        var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
+                                        for (let j = 0; j < spawnRegion.m_ActiveSpawns.length; j++) {
+                                            spawnRegion.m_ActiveSpawns[j].m_Position[1] += sceneOffset;
+                                        }
+                                        spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion = JSON.stringify(spawnRegion);
+                                    }
+                                    scene.m_SpawnRegionManagerSerialized = JSON.stringify(spawnManager);
+                                    spawnManager = null;
+                                    ;
+
+                                    var gearManager = JSON.parse(scene.m_GearManagerSerialized);
+                                    for (let i = 0; i < gearManager.m_SerializedItems.length; i++) {
+                                        var gear = JSON.parse(gearManager.m_SerializedItems[i].m_SearializedGear);
+                                        gear.m_Position[1] += sceneOffset;
+                                        gearManager.m_SerializedItems[i].m_SearializedGear = JSON.stringify(gear);
+                                    }
+                                    scene.m_GearManagerSerialized = JSON.stringify(gearManager);
+                                    spawnManager = null;
 
                                     scene.m_ContainerManagerSerialized = applySceneOffset(scene.m_ContainerManagerSerialized, sceneOffset, "m_Position", "m_SerializedContainers");
                                     scene.m_ArrowManagerSerialized = applySceneOffset(scene.m_ArrowManagerSerialized, sceneOffset, "m_LocalPosition", "m_SerializedItems");
@@ -140,14 +141,14 @@ function migrateSave(files) {
 }
 
 function applySceneOffset(o, offset, positionName, firstChild, deserializeChild) {
-	if(o === null || o === undefined)
-		return o;
+    if (o === null || o === undefined)
+        return o;
     var deserializedObject = JSON.parse(o);
-	if(deserializedObject[firstChild] === undefined)
-		return null;
+    if (deserializedObject[firstChild] === undefined)
+        return null;
     for (let i = 0; i < deserializedObject[firstChild].length; i++) {
-		if(deserializedObject[firstChild][i] === null || deserializedObject[firstChild][i][positionName] === undefined)
-			continue;
+        if (deserializedObject[firstChild][i] === null || deserializedObject[firstChild][i][positionName] === undefined)
+            continue;
         if (deserializeChild) {
             var deserializedChild = JSON.parse(deserializedObject[firstChild][i]);
             deserializedChild[positionName][1] += offset;
