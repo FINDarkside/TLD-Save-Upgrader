@@ -55,6 +55,11 @@ function migrateSave(files) {
         reader2.onload = (function (event) {
             var data = event.target.result;
             var global = JSON.parse(decompressString(data));
+
+            var experienceManager = JSON.parse(global.m_ExperienceModeManagerSerialized);
+            if (experienceManager.m_CurrentModeType.indexOf("Challenge") > -1) {
+                newSave.m_Name = "ep1challenge" + $("#SaveSlot").val();
+            }
             if (sceneOffsets[bootScene]) {
                 var playerManager = JSON.parse(global.m_PlayerManagerSerialized);
                 playerManager.m_SaveGamePosition[1] += sceneOffsets[bootScene];
