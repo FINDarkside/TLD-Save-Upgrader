@@ -37,7 +37,7 @@ function migrateSave(files) {
 
     var newSave = {
         m_Timestamp: bootFile.lastModifiedDate || "23.5.2017 17:11",
-        m_Name: "ep1sandbox1",
+        m_Name: "ep1sandbox" + $("#SaveSlot").val(),
         m_Dict: {}
     };
 
@@ -122,7 +122,7 @@ function migrateSave(files) {
 
                                 newSave.m_Dict[zipEntry.name] = Array.from(new Uint8Array(fileData));
                                 if (zipAsyncFiles === 0) {
-                                    saveFile(serializeSave(newSave), "ep1sandbox1", "");
+                                    saveFile(serializeSave(newSave), newSave.m_Name, "");
                                 }
                             }, function (error) {
                                 alert(error.message);
