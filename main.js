@@ -2,7 +2,87 @@
 
 // y axis offset for scene coordinates
 var sceneOffsets = {
-    "LighthouseA": 150
+    "barnhousea": 150,
+    "campoffice": 150,
+    "campoffice_sandbox": undefined,
+    "caveb": 0,
+    "cavec": 0,
+    "caved": 0,
+    "coastalhousea": 150,
+    "coastalhouseb": 150,
+    "coastalhousec": 150,
+    "coastalhoused": 150,
+    "coastalhousee": 150,
+    "coastalhousef": 150,
+    "coastalhouseg": 150,
+    "coastalhouseh": 150,
+    "coastalhouseh_sandbox": undefined,
+    "dam": undefined,
+    "dam_sandbox": undefined,
+    "farmhousea": 150,
+    "farmhouseabasement": 150,
+    "fishingcabina": 150,
+    "fishingcabinb": 150,
+    "fishingcabinc": 150,
+    "fishingcabind": 150,
+    "housebasementc": 150,
+    "housebasemente": 150,
+    "housebasementf": 150,
+    "housebasementpv": 0,
+    "housebasementpv_sandbox": undefined,
+    "lakecabina": undefined,
+    "lakecabina_sandbox": undefined,
+    "lakecabinb": undefined,
+    "lakecabinb_sandbox": undefined,
+    "lakecabinc": 150,
+    "lakecabinc_sandbox": undefined,
+    "lakecabind": undefined,
+    "lakecabind_sandbox": 150,
+    "lakecabine": undefined,
+    "lakecabine_sandbox": undefined,
+    "lakecabinf": undefined,
+    "lakecabinf_sandbox": undefined,
+    "lighthousea": 150,
+    "mountaincavea": 0,
+    "mountaincaveb": 0,
+    "preppercachea": 150,
+    "preppercacheb": undefined,
+    "preppercachec": 150,
+    "preppercached": undefined,
+    "preppercachee": 150,
+    "preppercacheempty": undefined,
+    "preppercachef": 150,
+    "quonsetgasstation": 150,
+    "radiocontrolhut": 0,
+    "radiocontrolhut_sandbox": undefined,
+    "ruralstorea": 150,
+    "safehousea": 150,
+    "safehousea_sandbox": 150,
+    "trailera": 150,
+    "trailerb": 150,
+    "trailerc": 150,
+    "trailerd": 150,
+    "trailersshape": undefined,
+    "whalingmine": 0,
+    "whalingshipa": 0,
+    "whalingwarehousea": 0,
+    "coastalregion": 0,
+    "crashmountainregion": 0,
+    "damcavetransitionzone": 0,
+    "damrivertransitionzoneb": 0,
+    "damtransitionzone": 0,
+    "damtransitionzone_sandbox": 0,
+    "highwayminetransitionzone": 0,
+    "highwaytransitionzone": 0,
+    "lakeregion": undefined,
+    "lakeregion_sandbox": 0,
+    "marshregion": undefined,
+    "marshregion_sandbox": undefined,
+    "minetransitionzone": 0,
+    "ravinetransitionzone": 0,
+    "ruralregion": 0,
+    "ruralregion_sandbox": undefined,
+    "whalingstationregion": 0
 };
 
 $(function () {
@@ -60,9 +140,9 @@ function migrateSave(files) {
             if (experienceManager.m_CurrentModeType.indexOf("Challenge") > -1) {
                 newSave.m_Name = "ep1challenge" + $("#SaveSlot").val();
             }
-            if (sceneOffsets[bootScene]) {
+            if (sceneOffsets[bootScene.toLowerCase()]) {
                 var playerManager = JSON.parse(global.m_PlayerManagerSerialized);
-                playerManager.m_SaveGamePosition[1] += sceneOffsets[bootScene];
+                playerManager.m_SaveGamePosition[1] += sceneOffsets[bootScene.toLowerCase()];
                 global.m_PlayerManagerSerialized = JSON.stringify(playerManager);
                 data = compressString(JSON.stringify(global));
             }
@@ -82,9 +162,9 @@ function migrateSave(files) {
                             zipEntry.async('ArrayBuffer').then(function (fileData) {
                                 zipAsyncFiles--;
 
-                                if (sceneOffsets[zipEntry.name]) {
+                                if (sceneOffsets[zipEntry.name.toLowerCase()]) {
                                     var scene = JSON.parse(decompressString(fileData));
-                                    var sceneOffset = sceneOffsets[zipEntry.name];
+                                    var sceneOffset = sceneOffsets[zipEntry.name.toLowerCase()];
 
                                     var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
                                     for (let i = 0; i < spawnManager.m_SerializedSpawnRegions; i++) {
