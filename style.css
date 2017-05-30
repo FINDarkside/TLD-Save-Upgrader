@@ -7,6 +7,10 @@ h1{
   margin: 0px auto;
 }
 
-.collapsible-body h5:first-child{
+.collapsible-body *:first-child{
   margin-top: 0 !important;	
+}
+
+.collapsible-body *:last-child{
+  margin-bottom: 0 !important;	
 }
