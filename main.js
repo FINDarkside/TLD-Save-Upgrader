@@ -132,7 +132,7 @@ function migrateSave(files) {
     if (!globalFile || !bootFile || !scenesFile) {
         alert("Your save must contain files \"global\", \"boot\" and \"scenes.zip\"");
     }
-    ga('send', 'ConvertStarted');
+    ga('send', 'event', 'Convert', 'started');
 
     var newSave = {
         m_Timestamp: bootFile.lastModifiedDate || "23.5.2017 17:11",
@@ -190,7 +190,7 @@ function migrateSave(files) {
                                 sceneJSON = sceneJSON.replace(new RegExp(":-Infinity", "g"), ":0");
                                 sceneJSON = sceneJSON.replace(new RegExp(":NaN", "g"), ":0");
                                 var scene = JSON.parse(sceneJSON);
-
+                                    
                                 var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
                                 for (let i = 0; i < spawnManager.m_SerializedSpawnRegions.length; i++) {
                                     var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
@@ -231,7 +231,7 @@ function migrateSave(files) {
                                 newSave.m_Dict[zipEntry.name] = Array.from(new Uint8Array(fileData));
                                 if (zipAsyncFiles === 0) {
                                     saveFile(serializeSave(newSave), newSave.m_Name, "");
-                                    ga('send', 'ConvertCompleted');
+                                    ga('send', 'event', 'Convert', 'completed');
                                 }
                             }, function (error) {
                                 alert(error.message);
