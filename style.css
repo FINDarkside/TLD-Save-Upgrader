@@ -6,3 +6,7 @@ h1{
   max-width: 600px;
   margin: 0px auto;
 }
+
+.collapsible-body h5:first-child{
+  margin-top: 0 !important;	
+}
