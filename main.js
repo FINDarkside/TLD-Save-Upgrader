@@ -92,6 +92,7 @@ $(function () {
         alert("The necessary File APIs are not fully supported in this browser. Please update your browser or try a different one.");
     }
     $("#convert").on("click", function () {
+        ga('send', 'ConvertClicked');
         var files = document.getElementById('fileSelector').files;
         migrateSave(files);
     });
@@ -99,7 +100,6 @@ $(function () {
 });
 
 function migrateSave(files) {
-    console.log(files);
     var bootFile, globalFile, scenesFile;
     for (let i = 0; i < files.length; i++) {
         var file = files[i];
@@ -114,6 +114,7 @@ function migrateSave(files) {
     if (!globalFile || !bootFile || !scenesFile) {
         alert("Your save must contain files \"global\", \"boot\" and \"scenes.zip\"");
     }
+    ga('send', 'ConvertStarted');
 
     var newSave = {
         m_Timestamp: bootFile.lastModifiedDate || "23.5.2017 17:11",
@@ -205,6 +206,7 @@ function migrateSave(files) {
                                 newSave.m_Dict[zipEntry.name] = Array.from(new Uint8Array(fileData));
                                 if (zipAsyncFiles === 0) {
                                     saveFile(serializeSave(newSave), newSave.m_Name, "");
+                                    ga('send', 'ConvertCompleted');
                                 }
                             }, function (error) {
                                 alert(error.message);
@@ -244,7 +246,6 @@ function applySceneOffset(o, offset, positionName, firstChild, deserializeChild)
 }
 
 function serializeSave(save) {
-    console.log(save);
     return compressString(JSON.stringify(save));
 }
 
