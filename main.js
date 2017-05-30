@@ -153,7 +153,11 @@ function migrateSave(files) {
         var reader2 = new FileReader();
         reader2.onload = (function (event) {
             var data = event.target.result;
-            var global = JSON.parse(decompressString(data));
+            var globalJSON = decompressString(data);
+            globalJSON = globalJSON.replace(new RegExp(":Infinity", "g"), ":0");
+            globalJSON = globalJSON.replace(new RegExp(":-Infinity", "g"), ":0");
+            globalJSON = globalJSON.replace(new RegExp(":NaN", "g"), ":0");
+            var global = JSON.parse(globalJSON);
 
             var experienceManager = JSON.parse(global.m_ExperienceModeManagerSerialized);
             if (experienceManager.m_CurrentModeType.indexOf("Challenge") > -1) {
@@ -181,16 +185,15 @@ function migrateSave(files) {
                             zipEntry.async('ArrayBuffer').then(function (fileData) {
                                 zipAsyncFiles--;
 
-                                var scene = JSON.parse(decompressString(fileData));
+                                var sceneJSON = decompressString(fileData);
+                                sceneJSON = sceneJSON.replace(new RegExp(":Infinity", "g"), ":0");
+                                sceneJSON = sceneJSON.replace(new RegExp(":-Infinity", "g"), ":0");
+                                sceneJSON = sceneJSON.replace(new RegExp(":NaN", "g"), ":0");
+                                var scene = JSON.parse(sceneJSON);
 
                                 var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
                                 for (let i = 0; i < spawnManager.m_SerializedSpawnRegions.length; i++) {
-                                    try {
-                                        var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
-                                    } catch (e) {
-                                        console.log(e);
-                                        console.log(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
-                                    }
+                                    var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
                                     spawnRegion.m_ActiveSpawns = [];
                                     spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion = JSON.stringify(spawnRegion);
                                 }
