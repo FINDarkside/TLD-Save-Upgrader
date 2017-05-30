@@ -93,7 +93,7 @@ $(function () {
     }
 
     $("#convert").on("click", function () {
-        var warningSeen = localStorage.getItem("warningSeen") == true;
+        var warningSeen = localStorage.getItem("warningSeen") === "true";
 
         if (warningSeen) {
             var files = document.getElementById('fileSelector').files;
