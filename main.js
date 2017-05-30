@@ -225,10 +225,9 @@ function migrateSave(files) {
                                     scene.m_BreakDownObjectsSerialized = applySceneOffset(scene.m_BreakDownObjectsSerialized, sceneOffset, "m_Position", "strings", true);
                                     scene.m_RadialObjectSpawnersSerialized = applySceneOffset(scene.m_RadialObjectSpawnersSerialized, sceneOffset, "m_Position", "strings", true);
                                     scene.m_StickToGroundObjectsSerialized = applySceneOffset(scene.m_StickToGroundObjectsSerialized, sceneOffset, "m_Position", "strings", true);
-
-                                    fileData = compressString(JSON.stringify(scene));
                                 }
-
+                                
+                                fileData = compressString(JSON.stringify(scene));
                                 newSave.m_Dict[zipEntry.name] = Array.from(new Uint8Array(fileData));
                                 if (zipAsyncFiles === 0) {
                                     saveFile(serializeSave(newSave), newSave.m_Name, "");
