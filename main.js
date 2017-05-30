@@ -162,18 +162,19 @@ function migrateSave(files) {
                             zipEntry.async('ArrayBuffer').then(function (fileData) {
                                 zipAsyncFiles--;
 
-                                if (sceneOffsets[zipEntry.name.toLowerCase()]) {
-                                    var scene = JSON.parse(decompressString(fileData));
-                                    var sceneOffset = sceneOffsets[zipEntry.name.toLowerCase()];
+                                var scene = JSON.parse(decompressString(fileData));
 
-                                    var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
-                                    for (let i = 0; i < spawnManager.m_SerializedSpawnRegions.length; i++) {
-                                        var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
-                                        spawnRegion.m_ActiveSpawns = [];
-                                        spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion = JSON.stringify(spawnRegion);
-                                    }
-                                    scene.m_SpawnRegionManagerSerialized = JSON.stringify(spawnManager);
-                                    spawnManager = null;
+                                var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
+                                for (let i = 0; i < spawnManager.m_SerializedSpawnRegions.length; i++) {
+                                    var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
+                                    spawnRegion.m_ActiveSpawns = [];
+                                    spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion = JSON.stringify(spawnRegion);
+                                }
+                                scene.m_SpawnRegionManagerSerialized = JSON.stringify(spawnManager);
+                                spawnManager = null;
+
+                                if (sceneOffsets[zipEntry.name.toLowerCase()]) {
+                                    var sceneOffset = sceneOffsets[zipEntry.name.toLowerCase()];
 
                                     var gearManager = JSON.parse(scene.m_GearManagerSerialized);
                                     for (let i = 0; i < gearManager.m_SerializedItems.length; i++) {
@@ -182,7 +183,7 @@ function migrateSave(files) {
                                         gearManager.m_SerializedItems[i].m_SearializedGear = JSON.stringify(gear);
                                     }
                                     scene.m_GearManagerSerialized = JSON.stringify(gearManager);
-                                    spawnManager = null;
+                                    gearManager = null;
 
                                     scene.m_ContainerManagerSerialized = applySceneOffset(scene.m_ContainerManagerSerialized, sceneOffset, "m_Position", "m_SerializedContainers");
                                     scene.m_ArrowManagerSerialized = applySceneOffset(scene.m_ArrowManagerSerialized, sceneOffset, "m_LocalPosition", "m_SerializedItems");
