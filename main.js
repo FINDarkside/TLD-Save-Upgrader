@@ -91,10 +91,28 @@ $(function () {
     if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
         alert("The necessary File APIs are not fully supported in this browser. Please update your browser or try a different one.");
     }
+
     $("#convert").on("click", function () {
-        ga('send', 'ConvertClicked');
-        var files = document.getElementById('fileSelector').files;
-        migrateSave(files);
+        var warningSeen = localStorage.getItem("warningSeen") === true;
+
+        if (warningSeen) {
+            var files = document.getElementById('fileSelector').files;
+            migrateSave(files);
+        } else {
+            $("#modal1").modal("open");
+        }
+    });
+
+    $("#modal1").modal({
+        dismissible: false, // Modal can be dismissed by clicking outside of the modal
+        complete: function () {
+            try {
+                localStorage.setItem("warningSeen", true);
+                var files = document.getElementById("fileSelector").files;
+                migrateSave(files);
+            } catch (e) {
+            }
+        }
     });
 
 });
@@ -167,7 +185,12 @@ function migrateSave(files) {
 
                                 var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
                                 for (let i = 0; i < spawnManager.m_SerializedSpawnRegions.length; i++) {
-                                    var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
+                                    try {
+                                        var spawnRegion = JSON.parse(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
+                                    } catch (e) {
+                                        console.log(e);
+                                        console.log(spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion);
+                                    }
                                     spawnRegion.m_ActiveSpawns = [];
                                     spawnManager.m_SerializedSpawnRegions[i].m_SearializedSpawnRegion = JSON.stringify(spawnRegion);
                                 }
