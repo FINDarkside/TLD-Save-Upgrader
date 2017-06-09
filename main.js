@@ -200,8 +200,8 @@ function migrateSave(files) {
                                 scene.m_SpawnRegionManagerSerialized = JSON.stringify(spawnManager);
                                 spawnManager = null;
 
-                                if (sceneOffsets[zipEntry.name.toLowerCase()]) {
-                                    var sceneOffset = sceneOffsets[zipEntry.name.toLowerCase()];
+                                if (sceneOffsets[zipEntry.name.toLowerCase().split("_")[0]]) {
+                                    var sceneOffset = sceneOffsets[zipEntry.name.toLowerCase().split("_")[0]];
 
                                     var gearManager = JSON.parse(scene.m_GearManagerSerialized);
                                     for (let i = 0; i < gearManager.m_SerializedItems.length; i++) {
