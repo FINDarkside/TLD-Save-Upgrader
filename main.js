@@ -163,7 +163,7 @@ function migrateSave(files) {
             if (experienceManager.m_CurrentModeType.indexOf("Challenge") > -1) {
                 newSave.m_Name = "ep1challenge" + $("#SaveSlot").val();
             }
-            if (sceneOffsets[bootScene.toLowerCase()]) {
+            if (sceneOffsets[bootScene.toLowerCase().split("_")[0]]) {
                 var playerManager = JSON.parse(global.m_PlayerManagerSerialized);
                 playerManager.m_SaveGamePosition[1] += sceneOffsets[bootScene.toLowerCase()];
                 global.m_PlayerManagerSerialized = JSON.stringify(playerManager);
