@@ -74,7 +74,7 @@ var sceneOffsets = {
     "damtransitionzone_sandbox": 0,
     "highwayminetransitionzone": 0,
     "highwaytransitionzone": 0,
-    "lakeregion": 150,
+    "lakeregion": 0,
     "lakeregion_sandbox": 0,
     "marshregion": undefined,
     "marshregion_sandbox": undefined,
