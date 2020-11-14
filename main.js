@@ -231,7 +231,7 @@ function migrateSave(files) {
                                 fileData = compressString(JSON.stringify(scene));
                                 newSave.m_Dict[zipEntry.name] = Array.from(new Uint8Array(fileData));
                                 if (zipAsyncFiles === 0) {
-                                    saveFile(serializeSave(newSave), newSave.m_Name, "");
+                                    saveFile(serializeSave(newSave), newSave.m_Name, "application/octet-stream");
                                     ga('send', 'event', 'Convert', 'completed');
                                 }
                             }, function (error) {
