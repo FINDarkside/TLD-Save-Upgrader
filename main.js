@@ -189,6 +189,7 @@ function migrateSave(files) {
                                 sceneJSON = sceneJSON.replace(new RegExp(":Infinity", "g"), ":0");
                                 sceneJSON = sceneJSON.replace(new RegExp(":-Infinity", "g"), ":0");
                                 sceneJSON = sceneJSON.replace(new RegExp(":NaN", "g"), ":0");
+                                sceneJSON = sceneJSON.replace(new RegExp("m_SearializedBodyHarvest", "g"), "m_SerializedBodyHarvest");
                                 var scene = JSON.parse(sceneJSON);
                                     
                                 var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
