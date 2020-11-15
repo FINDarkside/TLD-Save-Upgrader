@@ -134,8 +134,9 @@ function migrateSave(files) {
     }
     ga('send', 'event', 'Convert', 'started');
 
+    var d = new Date(bootFile.lastModified); // Format: "2017-05-23 17:11:00"
     var newSave = {
-        m_Timestamp: bootFile.lastModifiedDate || "23.5.2017 17:11",
+        m_Timestamp: d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)+" "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2)+":"+("0"+d.getSeconds()).slice(-2),
         m_Name: "ep1sandbox" + $("#SaveSlot").val(),
         m_Dict: {}
     };
@@ -189,6 +190,7 @@ function migrateSave(files) {
                                 sceneJSON = sceneJSON.replace(new RegExp(":Infinity", "g"), ":0");
                                 sceneJSON = sceneJSON.replace(new RegExp(":-Infinity", "g"), ":0");
                                 sceneJSON = sceneJSON.replace(new RegExp(":NaN", "g"), ":0");
+                                sceneJSON = sceneJSON.replace(new RegExp("m_SearializedBodyHarvest", "g"), "m_SerializedBodyHarvest");
                                 var scene = JSON.parse(sceneJSON);
                                     
                                 var spawnManager = JSON.parse(scene.m_SpawnRegionManagerSerialized);
@@ -230,7 +232,7 @@ function migrateSave(files) {
                                 fileData = compressString(JSON.stringify(scene));
                                 newSave.m_Dict[zipEntry.name] = Array.from(new Uint8Array(fileData));
                                 if (zipAsyncFiles === 0) {
-                                    saveFile(serializeSave(newSave), newSave.m_Name, "");
+                                    saveFile(serializeSave(newSave), newSave.m_Name, "application/octet-stream");
                                     ga('send', 'event', 'Convert', 'completed');
                                 }
                             }, function (error) {
